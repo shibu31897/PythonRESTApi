@@ -38,7 +38,6 @@ class Cafe(db.Model):
         return {column.name: getattr(self, column.name) for column in self.__table__.columns}
 
 
-
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -52,6 +51,12 @@ def random():
     # Simply convert the random_cafe data record to a dictionary of key-value pairs.
     return jsonify(cafe=random_cafe.to_dict())
 
+
+@app.route("/all")
+def get_all_cafes():
+    cafes = db.session.query(Cafe).all()
+    #This uses a List Comprehension but you could also split it into 3 lines.
+    return jsonify(cafes=[cafe.to_dict() for cafe in cafes])
 
 ## HTTP GET - Read Record
 
